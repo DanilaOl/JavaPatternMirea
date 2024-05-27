@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.mirea.task9'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ru.mirea.task9.Main'
+        )
+    }
+}
+
+task copyJar(type: Copy) {
+    dependsOn "jar"
+    from file("$buildDir/libs/task9-1.0-SNAPSHOT.jar")
+    into file("$rootDir/src/main/resources/")
+}
+
+task dockerBuild(type: Exec) {
+    dependsOn "copyJar"
+    commandLine "docker", "build", "-t", "task9-1.0", "./src/main/resources/"
+}
+
+task dockerRun(type: Exec) {
+    dependsOn "dockerBuild"
+    commandLine "docker", "run", "--name", "task9-1.0", "task9-1.0"
+}
+
+task dockerStop(type: Exec) {
+    dependsOn "dockerRun"
+    commandLine "docker", "container", "rm", "task9-1.0"
+}
+
+task dockerDelete(type: Exec) {
+    dependsOn "dockerStop"
+    commandLine "docker", "rmi", "task9-1.0"
+}
+
+task deleteJar(type: Delete) {
+    dependsOn "dockerDelete"
+    delete file("$rootDir/src/main/resources/task9-1.0-SNAPSHOT.jar")
+}
