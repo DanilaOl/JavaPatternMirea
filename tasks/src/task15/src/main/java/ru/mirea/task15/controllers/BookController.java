@@ -28,7 +28,7 @@ public class BookController {
 
 	@DeleteMapping(value = "/delete_book")
 	@ResponseBody
-	public boolean deleteBook(Long id) {
+	public boolean deleteBook(@RequestParam(name = "id") Long id) {
 		int prevSize = bookService.getBooks().size();
 		bookService.deleteBookById(id);
 		return bookService.getBooks().size() != prevSize;

@@ -28,7 +28,7 @@ public class AuthorController {
 
 	@DeleteMapping(value = "/delete_author")
 	@ResponseBody
-	public boolean deleteAuthor(Long id) {
+	public boolean deleteAuthor(@RequestParam(name = "id") Long id) {
 		int prevSize = authorService.getAuthors().size();
 		authorService.deleteAuthorById(id);
 		return authorService.getAuthors().size() != prevSize;
