@@ -1,0 +1,13 @@
+CREATE TABLE IF Not EXISTS author (
+    id SERIAL PRIMARY KEY NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL;
+    middle_name VARCHAR(255) NOT NULL,
+    birth_date VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXITST book (
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    creation_date(255) NOT NULL
+);
